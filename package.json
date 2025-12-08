@@ -1,0 +1,39 @@
+{
+  "name": "freedroid",
+  "version": "1.0.0",
+  "description": "Transfer files from Mac to Android via USB",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:mac": "electron-builder --mac",
+    "dev": "electron . --dev"
+  },
+  "keywords": ["android", "file-transfer", "adb", "usb"],
+  "author": "FreeDroid",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.freedroid.app",
+    "productName": "FreeDroid",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "build/icon.icns",
+      "target": ["dmg", "zip"],
+      "extraResources": [
+        {
+          "from": "resources/platform-tools",
+          "to": "platform-tools"
+        }
+      ]
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "resources/**/*"
+    ]
+  }
+}

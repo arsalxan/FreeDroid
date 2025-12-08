@@ -1,0 +1,27 @@
+# Ignore node modules
+node_modules/
+
+# Ignore build output
+dist/
+build/*.icns
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore logs
+*.log
+npm-debug.log*
+
+# Ignore temporary files
+/tmp/
+*.tmp
+
+# Keep the platform-tools directory structure but ignore large binaries in git
+# (they should be downloaded during build process)

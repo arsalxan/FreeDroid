@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <title>FreeDroid - File Transfer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="4" y="4" width="24" height="24" rx="6" fill="url(#gradient1)" />
+            <path d="M12 16L15 19L20 13" stroke="white" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <defs>
+              <linearGradient id="gradient1" x1="4" y1="4" x2="28" y2="28">
+                <stop offset="0%" stop-color="#667eea" />
+                <stop offset="100%" stop-color="#764ba2" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <h1>FreeDroid</h1>
+        </div>
+        <div class="device-status" id="deviceStatus">
+          <div class="status-indicator" id="statusIndicator"></div>
+          <span id="statusText">Checking device...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button class="tab-button active" id="pushTab">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10H16M16 10L12 6M16 10L12 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Push to Android
+        </button>
+        <button class="tab-button" id="pullTab">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M16 10H4M4 10L8 6M4 10L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Pull from Android
+        </button>
+      </div>
+
+      <!-- Push Mode (existing functionality) -->
+      <div id="pushMode">
+        <!-- USB Debugging Info Banner -->
+        <div class="info-banner" id="usbDebugBanner" style="display: none;">
+          <div class="info-banner-icon">ℹ️</div>
+          <div class="info-banner-content">
+            <div class="info-banner-title">Enable USB Debugging</div>
+            <div class="info-banner-text">
+              To transfer files, enable USB debugging on your Android device:
+              <strong>Settings → Developer Options → USB Debugging</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-zone-content">
+            <svg class="drop-icon" width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" stroke="url(#gradient2)" stroke-width="4" stroke-dasharray="8 8" />
+              <path d="M40 20V60M20 40H60" stroke="url(#gradient2)" stroke-width="4" stroke-linecap="round" />
+              <defs>
+                <linearGradient id="gradient2" x1="0" y1="0" x2="80" y2="80">
+                  <stop offset="0%" stop-color="#667eea" />
+                  <stop offset="100%" stop-color="#764ba2" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <h2>Drag & Drop Files Here</h2>
+            <p>or</p>
+            <button class="btn-primary" id="selectFilesBtn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              Select Files
+            </button>
+            <button class="btn-secondary" id="selectFolderBtnInitial" style="margin-top: 12px;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M2 5C2 3.89543 2.89543 3 4 3H7L9 5H16C17.1046 5 18 5.89543 18 7V15C18 16.1046 17.1046 17 16 17H4C2.89543 17 2 16.1046 2 15V5Z"
+                  stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              </svg>
+              Add Folder
+            </button>
+          </div>
+        </div>
+
+        <!-- File List -->
+        <div class="file-list-container" id="fileListContainer" style="display: none;">
+          <div class="file-list-header">
+            <h3>Selected Files (<span id="fileCount">0</span>) · <span id="totalFileSize" class="total-size">0 Bytes</span></h3>
+            <div class="file-list-actions">
+              <button class="btn-secondary" id="clearFilesBtn">Clear All</button>
+              <button class="btn-secondary" id="selectMoreFilesBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Add Files
+              </button>
+              <button class="btn-secondary" id="selectFolderBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M2 5C2 3.89543 2.89543 3 4 3H7L9 5H16C17.1046 5 18 5.89543 18 7V15C18 16.1046 17.1046 17 16 17H4C2.89543 17 2 16.1046 2 15V5Z"
+                    stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+                Add Folder
+              </button>
+              <button class="btn-primary" id="transferBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M4 10H16M16 10L12 6M16 10L12 14" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Send to Android
+              </button>
+            </div>
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </div>
+
+        <!-- Transfer Progress -->
+        <div class="transfer-results" id="transferResults" style="display: none;">
+          <h3>Transfer Results</h3>
+          <div class="results-list" id="resultsList"></div>
+          <button class="btn-primary" id="newTransferBtn">New Transfer</button>
+        </div>
+      </div>
+
+      <!-- Pull Mode (new functionality) -->
+      <div id="pullMode" style="display: none;">
+        <div class="pull-mode-wrapper">
+          <!-- Main Content Area -->
+          <div class="pull-mode-content">
+            <!-- Device Selector -->
+            <div class="device-selector">
+              <label for="deviceSelect">Select Device:</label>
+              <select id="deviceSelect">
+                <option value="">Loading devices...</option>
+              </select>
+            </div>
+
+            <!-- USB Debugging Info Banner -->
+            <div class="info-banner" id="usbDebugBannerPull" style="display: none;">
+              <div class="info-banner-icon">ℹ️</div>
+              <div class="info-banner-content">
+                <div class="info-banner-title">Enable USB Debugging</div>
+                <div class="info-banner-text">
+                  No Android device detected. Enable USB debugging on your device:
+                  <strong>Settings → Developer Options → USB Debugging</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selection Controls -->
+            <div class="selection-controls">
+              <button class="btn-secondary btn-sm" id="selectAllBtn">Select All</button>
+              <button class="btn-secondary btn-sm" id="clearSelectionBtn">Clear Selection</button>
+              <span class="selection-count" id="selectionCount">0 selected</span>
+              <!-- Fixed Pull Button - Always visible when items selected -->
+              <button class="btn-primary btn-sm" id="pullSelectedBtnTop" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                  <path d="M16 10H4M4 10L8 6M4 10L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+                Pull Selected
+              </button>
+            </div>
+
+            <!-- Breadcrumb Navigation -->
+            <div class="breadcrumb" id="breadcrumb">
+              <span class="breadcrumb-current">Loading...</span>
+            </div>
+
+            <!-- File Browser -->
+            <div class="android-file-browser" id="fileBrowser">
+              <div class="browser-loading">
+                <div class="spinner"></div>
+                <p>Select a device to browse files</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Items Sidebar -->
+          <div class="selected-items-panel" id="selectedItemsPanel" style="display: none;">
+            <div class="selected-items-header">
+              <h3>Selected Items</h3>
+              <button class="btn-icon" id="closePanelBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+            </div>
+            <div class="selected-items-info">
+              <span id="selectedItemCount">0 items</span>
+              <span id="selectedItemSize">0 B</span>
+            </div>
+            <div class="selected-items-list" id="selectedItemsList"></div>
+            <div class="selected-items-actions">
+              <button class="btn-primary" id="pullSelectedBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M16 10H4M4 10L8 6M4 10L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+                Pull Selected Items
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Preview Modal -->
+    <div class="preview-modal" id="previewModal" style="display: none;">
+      <div class="preview-backdrop"></div>
+      <div class="preview-content">
+        <div class="preview-header">
+          <h3 id="previewTitle">Preview</h3>
+          <button class="btn-icon" id="closePreviewBtn">
+            <svg width="24" height="24" viewBox="0 0 20 20" fill="none">
+              <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+        <div class="preview-body" id="previewBody">
+          <div class="preview-loading">
+            <div class="spinner"></div>
+            <p>Loading preview...</p>
+          </div>
+        </div>
+        <div class="preview-footer" id="previewFooter">
+          <div class="preview-metadata" id="previewMetadata"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+
+</html>
