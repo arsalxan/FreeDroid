@@ -15,7 +15,7 @@ A beautiful, standalone macOS application for transferring files between your Ma
 
 ### Download
 
-Download the latest release from **[GitHub Releases](https://github.com/YOUR_USERNAME/FreeDroid/releases)**:
+Download the latest release from **[GitHub Releases](https://github.com/arsalxan/FreeDroid/releases)**:
 - `FreeDroid-1.0.0.dmg` - macOS disk image (recommended)
 - `FreeDroid-1.0.0-mac.zip` - Zipped app bundle
 
