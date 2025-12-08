@@ -8,7 +8,12 @@
     "build:mac": "electron-builder --mac",
     "dev": "electron . --dev"
   },
-  "keywords": ["android", "file-transfer", "adb", "usb"],
+  "keywords": [
+    "android",
+    "file-transfer",
+    "adb",
+    "usb"
+  ],
   "author": "FreeDroid",
   "license": "MIT",
   "devDependencies": {
@@ -20,8 +25,10 @@
     "productName": "FreeDroid",
     "mac": {
       "category": "public.app-category.utilities",
-      "icon": "build/icon.icns",
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "extraResources": [
         {
           "from": "resources/platform-tools",
