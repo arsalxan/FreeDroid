@@ -27,27 +27,18 @@ Download the latest release from **[GitHub Releases](https://github.com/arsalxan
 
 ### ⚠️ First Launch (Important!)
 
-Since FreeDroid is not signed with an Apple Developer certificate, macOS Gatekeeper will block it on first launch. This is normal for open-source apps.
-
-**To open FreeDroid for the first time:**
-
-1. Open **Applications** folder in Finder
-2. **Right-click** (or Control-click) on **FreeDroid**
-3. Click **"Open"** from the context menu
-4. Click **"Open"** again in the dialog that appears
-
-> **Note**: You only need to do this once! After the first launch, FreeDroid will open normally by double-clicking.
-
-<details>
-<summary>💡 Alternative method (Terminal)</summary>
-
-If the right-click method doesn't work, run this command in Terminal:
+Since FreeDroid is not signed with an Apple Developer certificate, macOS Gatekeeper will block it. **Run this command once** to allow it:
 
 ```bash
-xattr -cr /Applications/FreeDroid.app
+sudo xattr -d com.apple.quarantine /Applications/FreeDroid.app
 ```
 
-Then double-click to launch normally.
+Then double-click to open normally. You'll only need to do this once!
+
+<details>
+<summary>💡 Why is this needed?</summary>
+
+Apple requires developers to pay $99/year for code signing certificates. Without this, macOS blocks apps from "unidentified developers" by default. The command above tells macOS you trust this app.
 </details>
 
 ## Usage
