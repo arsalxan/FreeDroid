@@ -151,10 +151,3 @@ npm run dev
 ## License
 
 MIT License - feel free to use and modify!
-
-## Credits
-
-- Push mode based on the original `send.py` script
-- Pull mode inspired by Android file management apps
-- Built with Electron and ADB for reliable cross-platform communication
-
