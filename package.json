@@ -23,12 +23,18 @@
   "build": {
     "appId": "com.freedroid.app",
     "productName": "FreeDroid",
+    "afterPack": "./scripts/afterPack.js",
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
         "dmg",
         "zip"
       ],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
       "extraResources": [
         {
           "from": "resources/platform-tools",
@@ -40,7 +46,8 @@
       "main.js",
       "preload.js",
       "src/**/*",
-      "resources/**/*"
+      "resources/**/*",
+      "!resources/platform-tools/**/*"
     ]
   }
 }

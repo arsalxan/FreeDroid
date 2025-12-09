@@ -32,14 +32,35 @@ jobs:
           unzip platform-tools.zip
           mv platform-tools/* resources/platform-tools/
           rm -rf platform-tools platform-tools.zip
+          # Fix permissions on ADB before packaging
+          chmod +x resources/platform-tools/adb
+          chmod +x resources/platform-tools/fastboot 2>/dev/null || true
+          ls -la resources/platform-tools/
 
       - name: Build macOS App
         run: npm run build:mac
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: List dist folder
         run: ls -la dist/
+
+      - name: Verify App Bundle
+        run: |
+          echo "=== Finding app bundle ==="
+          APP_PATH=$(find dist -name "*.app" -type d | head -1)
+          echo "App path: $APP_PATH"
+          
+          echo "=== Checking ADB binary permissions ==="
+          find "$APP_PATH" -name "adb" -exec ls -la {} \; 2>/dev/null || echo "ADB not found in bundle"
+          
+          echo "=== Verifying code signature ==="
+          codesign --verify --deep --verbose=2 "$APP_PATH" 2>&1 || echo "Signature verification completed with warnings"
+          
+          echo "=== Checking bundle structure ==="
+          ls -la "$APP_PATH/Contents/"
+          ls -la "$APP_PATH/Contents/Resources/" | head -20
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
