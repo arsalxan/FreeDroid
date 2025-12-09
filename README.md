@@ -4,12 +4,10 @@ A beautiful, standalone macOS application for transferring files between your Ma
 
 ## Features
 
-✨ **Zero Dependencies** - No need to install Python, ADB, or any other tools  
 🎨 **Modern UI** - Beautiful dark-mode interface with tab-based navigation  
 📁 **Bidirectional Transfer** - Send files to Android OR pull files from Android  
 🗂️ **File Browser** - Navigate Android filesystem with breadcrumb navigation  
 🔄 **Real-time Status** - Live device connection detection  
-⚡ **Fast & Reliable** - Uses ADB (Android Debug Bridge) for stable transfers
 
 ## Installation
 
